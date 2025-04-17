@@ -13,7 +13,7 @@ pipeline {
                     withSonarQubeEnv("${env.SONARQUBE_SCANNER}") {
                         sh '''
                             python3 -m venv venv
-                            source venv/bin/activate
+                            . venv/bin/activate  # Use dot instead of source to activate the virtual environment
                             pip3 install -r requirements.txt
                             pip3 install pytest pytest-cov
                             pytest --cov=app.py --cov-report=xml
