@@ -12,13 +12,15 @@ pipeline {
                 script {
                     withSonarQubeEnv("${env.SONARQUBE_SCANNER}") {
                         sh '''
-                            # Ensure python3 and pip3 are available
-                            python3 --version
-                            pip3 --version
+                            # Create a virtual environment in the workspace
+                            python3 -m venv venv
+
+                            # Activate the virtual environment
+                            source venv/bin/activate
 
                             # Install dependencies
-                            pip3 install -r requirements.txt
-                            pip3 install pytest pytest-cov
+                            pip install -r requirements.txt
+                            pip install pytest pytest-cov
 
                             # Run unit tests and generate coverage report
                             pytest --cov=app.py --cov-report=xml
