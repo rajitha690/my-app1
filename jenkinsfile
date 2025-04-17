@@ -17,7 +17,7 @@ pipeline {
                             pip3 install -r requirements.txt
                             pip3 install pytest pytest-cov
                             pytest --cov=app.py --cov-report=xml
-                            sonar
+                            sonar-scanner
                         '''
                     }
                 }
