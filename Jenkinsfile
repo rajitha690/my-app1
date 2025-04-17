@@ -12,9 +12,18 @@ pipeline {
                 script {
                     withSonarQubeEnv("${env.SONARQUBE_SCANNER}") {
                         sh '''
-                            pip install -r requirements.txt
-                            pip install pytest pytest-cov
+                            # Ensure python3 and pip3 are available
+                            python3 --version
+                            pip3 --version
+
+                            # Install dependencies
+                            pip3 install -r requirements.txt
+                            pip3 install pytest pytest-cov
+
+                            # Run unit tests and generate coverage report
                             pytest --cov=app.py --cov-report=xml
+
+                            # Run SonarQube scanner
                             sonar-scanner
                         '''
                     }
@@ -39,6 +48,7 @@ pipeline {
             steps {
                 echo "Build step - all good from quality gate"
                 sh 'echo "Packaging app..."'
+                // Add your build steps here (e.g., docker build, maven package)
             }
         }
 
@@ -51,7 +61,7 @@ pipeline {
             steps {
                 echo "Deploying the app..."
                 sh 'echo "Deploying Flask app..."'
-                // you can add docker build/push or kubectl apply here
+                // You can add Docker build/push or kubectl apply here
             }
         }
     }
