@@ -7,25 +7,23 @@ pipeline {
 
     stages {
 
+        stage('Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Quality Gate') {
             steps {
                 script {
                     withSonarQubeEnv("${env.SONARQUBE_SCANNER}") {
                         sh '''
-                            # Create a virtual environment in the workspace
-                            python3 -m venv venv
-
-                            # Activate the virtual environment
+                            # Setup virtual environment using ShiningPanda
+                            python -m venv venv
                             source venv/bin/activate
-
-                            # Install dependencies
                             pip install -r requirements.txt
                             pip install pytest pytest-cov
-
-                            # Run unit tests and generate coverage report
                             pytest --cov=app.py --cov-report=xml
-
-                            # Run SonarQube scanner
                             sonar-scanner
                         '''
                     }
@@ -50,7 +48,6 @@ pipeline {
             steps {
                 echo "Build step - all good from quality gate"
                 sh 'echo "Packaging app..."'
-                // Add your build steps here (e.g., docker build, maven package)
             }
         }
 
@@ -63,7 +60,6 @@ pipeline {
             steps {
                 echo "Deploying the app..."
                 sh 'echo "Deploying Flask app..."'
-                // You can add Docker build/push or kubectl apply here
             }
         }
     }
