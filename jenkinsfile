@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_SCANNER = 'sonar' // Your SonarQube installation name in Jenkins
+        SONARQUBE_SCANNER = 'sonar-scanner' // Your SonarQube installation name in Jenkins
     }
 
     stages {
